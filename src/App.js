@@ -25,6 +25,8 @@ function App() {
       .map((card) => ({ ...card, id: Math.random() }));
 
     setCards(shuffledCards);
+    setChoiceOne(null);
+    setChoiceTwo(null);
     setTurns(0);
   };
 
@@ -69,6 +71,11 @@ function App() {
     setDisabled(false);
   };
 
+  // start a new game on first launch
+  useEffect(() => {
+    shuffleCards();
+  }, [])
+
   return (
     <div className="App">
       <h1>Magic Match</h1>
@@ -85,6 +92,7 @@ function App() {
           />
         ))}
       </div>
+      <p>Turns: {turns}</p>
     </div>
   );
 }
