@@ -3,12 +3,12 @@ import './App.css'
 import SingleCard from './components/SingleCard';
 
 const cardImages = [
-  { "src": "/img/helmet-1.png" },
-  { "src": "/img/potion-1.png" },
-  { "src": "/img/ring-1.png" },
-  { "src": "/img/scroll-1.png" },
-  { "src": "/img/shield-1.png" },
-  { "src": "/img/sword-1.png" },
+  { "src": "/img/helmet-1.png", matched: false },
+  { "src": "/img/potion-1.png", matched: false },
+  { "src": "/img/ring-1.png", matched: false },
+  { "src": "/img/scroll-1.png", matched: false },
+  { "src": "/img/shield-1.png", matched: false },
+  { "src": "/img/sword-1.png", matched: false },
 ]
 
 function App() {
@@ -29,8 +29,8 @@ function App() {
 
   // handle a choice
   const handleChoice = (card) => {
-    if(choiceOne) {
-      if(choiceOne.id !== card.id) {
+    if (choiceOne) {
+      if (choiceOne.id !== card.id) {
         setChoiceTwo(card);
       }
     }
@@ -41,10 +41,18 @@ function App() {
 
   // check for match
   useEffect(() => {
-    if(choiceOne && choiceTwo) {
-      if(choiceOne.src === choiceTwo.src) console.log("match")
-      else console.log("no match")
-      
+    if (choiceOne && choiceTwo) {
+      if (choiceOne.src === choiceTwo.src) {
+        setCards(prev => {
+          return prev.map(card => {
+            if (card.src === choiceOne.src) {
+              return { ...card, matched: true };
+            } else {
+              return card;
+            }
+          });
+        });
+      }
       resetTurn();
     }
   }, [choiceOne, choiceTwo])
@@ -63,9 +71,9 @@ function App() {
 
       <div className="card-grid">
         {cards.map(card => (
-          <SingleCard 
-            key={card.id} 
-            card={card} 
+          <SingleCard
+            key={card.id}
+            card={card}
             handleChoice={handleChoice}
           />
         ))}
