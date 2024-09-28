@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 import SingleCard from './components/SingleCard';
+import ReactConfetti from 'react-confetti';
 
 const cardImages = [
   { "src": "/img/helmet-1.png", matched: false },
@@ -17,6 +18,7 @@ function App() {
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
   const [disabled, setDisabled] = useState(false);
+  const [win, setWin] = useState(false); 
 
   // shuffle cards
   const shuffleCards = () => {
@@ -63,6 +65,14 @@ function App() {
     }
   }, [choiceOne, choiceTwo])
 
+  useEffect(() => {
+    if (cards.every(card => card.matched)) {
+      setWin(true);
+    } else {
+      setWin(false);
+    }
+  }, [cards])
+
   // reset choices & increase turn
   const resetTurn = () => {
     setChoiceOne(null);
@@ -78,6 +88,7 @@ function App() {
 
   return (
     <div className="App">
+      {win && <ReactConfetti width={window.innerWidth} height={window.innerHeight} tweenDuration={1000} /> }
       <h1>Magic Match</h1>
       <button onClick={shuffleCards}>New Game</button>
 
